@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<title></title>
+		<LINK href="Styles.css" type="text/css" rel="stylesheet">
+		<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+		<meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1">
+		<meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+	</head>
+
+   <script language=javascript>
+       var SuraName = readCookie('LastSura');
+      if (SuraName) alert('zadnja procitana sura: ' + SuraName);
+
+      function readCookie(name) {
+         var nameEQ = name + "=";
+         var ca = document.cookie.split(';');
+
+         for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+         }
+
+         return null;
+      }
+   </script>
+
+	<body class="TableCellBackColorSadrzaj">
+		<TABLE id="Table1" cellSpacing="1" cellPadding="1" width="100%" border="0">
+			<TR>
+				<TD width="1%"><a href="javascript:top.location.reload(false);"><IMG alt="" src="Home.gif"></a></TD>
+				<TD>&nbsp;</TD>
+				<td noWrap><a href="Predgovor.htm" target="main"><strong>predgovor<br>
+							autora</strong></a></td>
+				<TD>&nbsp;</TD>
+				<td noWrap><a href="KuranNauka/KuranNauka.htm" target="main"><strong>kuran i<br>
+							nauka</strong></a></td>
+				<TD noWrap align="center">&nbsp;</TD>
+				<td noWrap><a href="Pretraga.htm" target="main"><strong>pretraga<br>
+							kur'ana</strong></a></td>
+				<TD style="WIDTH: 44px" noWrap align="center" width="44"><a href="ListaSura.htm" target="main"><STRONG>lista<BR>
+							sura</STRONG></a></TD>
+				<TD align="center" width="99%" nowrap><STRONG><FONT size="2">prevod KUR'ANA na bosanski
+							jezik&nbsp;<BR>
+							Mustafa Mlivo, III izdanje</FONT></STRONG></TD>
+				<TD width="1%"><a href="javascript:top.location.reload(false);"><IMG alt="" src="Home.gif"></a></TD>
+			</TR>
+		</TABLE>
+	</body>
+</html>

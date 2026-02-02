@@ -1,0 +1,81 @@
+*  {font-family:verdana; font-size:14px}
+SMALL, .small, SUP, BR, SMALL SPAN {font-size:7pt}
+CODE, KBD, TT {font-size:9pt;color:#666}
+
+.SuraTitle { font-weight: bold; font-size: 13pt; color: maroon; }
+.SuraDesc { font-size: 8pt; }
+
+A:link, A:visited {color: #0063CE;text-decoration:none}
+A:active {	color: deeppink; text-decoration: none;}
+A:hover{color: tomato; text-decoration: none;}
+
+IMG {border: none;}
+SPAN{border-width:1;}
+UL {list-style:disc} 
+UL UL {list-style:circle}
+UL UL UL {list-style:square}
+
+body{ margin: 2px; }
+
+.TableCellBackColor{background-color: #cfe8e0;}
+
+.TableCellBackColorSadrzaj
+{
+    background-color: #DCDCBA;
+}
+
+.TableCellBackListaSura
+{
+	font-weight: bolder;
+	font-size: 10pt;
+	filter: progid:DXImageTransform.Microsoft.Shadow(Color=silver, direction=155, strength=4);
+}
+
+.SuraHeader
+{
+	z-index: 19;
+	filter: progid:DXImageTransform.Microsoft.Shadow(Color=#003333, direction=155, strength=5);
+    -moz-box-shadow: 4px 4px 4px #666;
+	-webkit-box-shadow: 4px 4px 4px #666;
+	box-shadow: 4px 4px 4px #666;
+	position: absolute;
+	background-color: #cccc99;
+}
+
+.SuraBody
+{
+	position: absolute;
+	top: 55px;
+}
+
+.FusNota
+{
+	display: inline;
+	cursor: pointer;
+	color: red;
+	text-align: left;
+}
+
+.ToolTip
+{
+	border-right: darkred 1px groove;
+	padding-right: 3px;
+	border-top: darkred 1px groove;
+	padding-left: 3px;
+	font-size: 8pt;
+	z-index: 10000;
+	filter: progid:DXImageTransform.Microsoft.Shadow(Color=gray, direction=155, strength=5);
+	-moz-box-shadow: 4px 4px 4px #666;
+	-webkit-box-shadow: 4px 4px 4px #666;
+	box-shadow: 4px 4px 4px #666;
+	left: 0px;
+	visibility: hidden;
+	padding-bottom: 3px;
+	border-left: darkred 1px groove;
+	width: 250px;
+	padding-top: 3px;
+	border-bottom: darkred 1px groove;
+	position: absolute;
+	top: 0px;
+	background-color: #dee7f7;
+}
