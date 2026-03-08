@@ -34,23 +34,17 @@ function createCookie(name,value,days) {
 
 function CopyToClipboard (FusNota) {
    // copy fus-note to a clipboard
-   console.log('CopyToClipboard called with:', FusNota);
    if (document.all) {
        holdtext.innerText = FusNota;
        Copied = holdtext.createTextRange();
        Copied.execCommand("RemoveFormat");
        Copied.execCommand("Copy");
-       console.log('Copied to clipboard (IE)');
-   } else {
-       console.log('Not IE - Copy not supported');
    }
 }
 
 function ShowHideFusNote() {
     // get all the DIV elements and store them in array
-    console.log('ShowHideFusNote called');
     myDivElements = document.getElementsByTagName("div");
-    var toggled = 0;
 
     for (cnt=0; cnt<myDivElements.length; cnt++) {
         var iState = myDivElements.item(cnt).style.visibility;
@@ -58,14 +52,11 @@ function ShowHideFusNote() {
         if (myDivElements.item(cnt).getAttribute('fus_nota')) {  // sakri je samo ako div ima fus_notu
            if (iState == 'hidden') {
                myDivElements.item(cnt).style.visibility = 'visible';
-               toggled++;
            } else {
                myDivElements.item(cnt).style.visibility = 'hidden';
-               toggled++;
            }
         }
     }
-    console.log('Toggled ' + toggled + ' fus notes');
 }
 
 function ScroolHeader(headerObject) {
@@ -73,22 +64,12 @@ function ScroolHeader(headerObject) {
 }
 
 function doTooltip(e, msg) {
-   console.log('doTooltip called with msg:', msg);
-   if (typeof Tooltip == "undefined" || !Tooltip.ready) {
-       console.log('Tooltip not ready');
-       return;
-   }
-   console.log('Showing tooltip');
+   if (typeof Tooltip == "undefined" || !Tooltip.ready) return;
    Tooltip.show(e, msg);
 }
 
 function hideTip() {
-   console.log('hideTip called');
-   if ( typeof Tooltip == "undefined" || !Tooltip.ready ) {
-       console.log('Tooltip not ready');
-       return;
-   }
-   console.log('Hiding tooltip');
+   if ( typeof Tooltip == "undefined" || !Tooltip.ready ) return;
    Tooltip.hide();
 }
 
