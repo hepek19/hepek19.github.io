@@ -24,6 +24,11 @@ body{ margin: 2px; }
     background-color: #DCDCBA;
 }
 
+body.TableCellBackColorSadrzaj
+{
+	padding-bottom: 2pt;
+}
+
 tr.activeSura td {
     background-color: #3d6b55 !important;
 }
@@ -52,7 +57,7 @@ tr.activeSura td a:hover {
 	position: sticky;
 	top: 0;
 	background-color: #cccc99;
-	margin-bottom: 15px;
+	margin-bottom: 9px;
 }
 
 .SuraBody
