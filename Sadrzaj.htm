@@ -485,8 +485,7 @@
 		// Listen for localStorage changes (e.g., home button clearing highlight)
 		window.addEventListener('storage', function(e) {
 			if (e.key === 'clearActiveSura' && e.newValue === 'true') {
-				console.log('Storage event: clearActiveSura flag detected');
-				localStorage.removeItem('clearActiveSura');
+					localStorage.removeItem('clearActiveSura');
 				highlightRow(null);  // Clear any active highlight
 			}
 		});
@@ -494,17 +493,14 @@
 		// On load: check if home was clicked (clear highlight) or restore last read sura
 		window.addEventListener('load', function() {
 			var clearFlag = localStorage.getItem('clearActiveSura');
-			console.log('Sadrzaj load - clearActiveSura flag:', clearFlag);
-			// Check if home was clicked - clear highlight
+				// Check if home was clicked - clear highlight
 			if (clearFlag) {
-				console.log('Clearing active sura highlight');
-				localStorage.removeItem('clearActiveSura');
+					localStorage.removeItem('clearActiveSura');
 				highlightRow(null);  // Clear any active highlight
 			} else {
 				// Otherwise restore last read sura
 				var lastSura = localStorage.getItem('LastSura');
-				console.log('Restoring last sura:', lastSura);
-				if (lastSura) {
+						if (lastSura) {
 					var link = document.querySelector('a[href="Sure/' + lastSura + '.htm"]');
 					if (link) {
 						highlightRow(link.closest('tr'));
