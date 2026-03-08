@@ -17,6 +17,20 @@ UL UL UL {list-style:square}
 
 body{ margin: 2px; }
 
+.tooltip {
+	position: absolute;
+	visibility: hidden;
+	background-color: #ffffcc;
+	color: #000;
+	border: 1px solid #999;
+	padding: 5px 8px;
+	font-size: 10pt;
+	z-index: 1000;
+	max-width: 300px;
+	border-radius: 3px;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
 .TableCellBackColor{background-color: #cfe8e0;}
 
 .TableCellBackColorSadrzaj
