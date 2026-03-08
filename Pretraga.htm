@@ -2,10 +2,9 @@
 	<head>
 	<meta charset="UTF-8">
 		<title>Pretraga</title>
-		<meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
-		<LINK href="Styles.css" type="text/css" rel="stylesheet">
-		<script language="JavaScript" type="text/javascript" SRC="search.js"></script>
-		<script language="JavaScript">
+		<link href="Styles.css" type="text/css" rel="stylesheet">
+		<script type="text/javascript" SRC="search.js"></script>
+		<script>
 			function AddChar(char_choosen) {
 				JF1.JT1.value = JF1.JT1.value + char_choosen;
 				JF1.JT1.focus();
@@ -33,40 +32,40 @@
 			}
 		</script>
 	</head>
-	<body onLoad='JavaScript:document.JF1.JT1.focus()' background="BackGround.gif">
-		<P align="center">
-		</P>
-		<P align="center">&nbsp;</P>
-		<P align="center">
-			<BR>
-			<FONT size="5"><STRONG>Pretraga Kur'ana</STRONG></FONT>
-		</P>
-		<P align="center">Utipkaj rije&#269; ili dio rije&#269;i&nbsp;koju tražiš i klikni
+	<body onLoad='JavaScript:document.JF1.JT1.focus()' style="background-image:url(BackGround.gif)">
+		<p style="text-align:center">
+		</p>
+		<p style="text-align:center">&nbsp;</p>
+		<p style="text-align:center">
+			<br>
+			<font size="5"><strong>Pretraga Kur'ana</strong></font>
+		</p>
+		<p style="text-align:center">Utipkaj rije&#269; ili dio rije&#269;i&nbsp;koju tražiš i klikni
 			na dugme "pretraga".
-			<BR>
-			Koristi&nbsp;linkove na lijevoj strani za bosanska slova.</P>
+			<br>
+			Koristi&nbsp;linkove na lijevoj strani za bosanska slova.</p>
 		<form name="JF1" action="javascript:StartSearch(document.JF1.JT1.value)">
-			<P align="center">
-				<TABLE id="Table1" cellSpacing="3" cellPadding="3" border="0">
-					<TR>
-						<TD>&nbsp;&nbsp;
-							<TABLE id="Table2" cellSpacing="3" cellPadding="3" border="0">
-								<TR>
-									<TD><a href="#" onclick="AddChar('&#269;')">&#269;</a></TD>
-									<TD><a href="#" onclick="AddChar('&#263;')">&#263;</a></TD>
-									<TD><a href="#" onclick="AddChar('&#273;')">&#273;</a></TD>
-									<TD><a href="#" onclick="AddChar('š')">š</a></TD>
-									<TD><a href="#" onclick="AddChar('ž')">ž</a></TD>
-								</TR>
-							</TABLE>
-							&nbsp;&nbsp;</TD>
-						<TD>
-							<input type="text" name="JT1" size="22" style="WIDTH: 168px; HEIGHT: 20px"></TD>
-						<TD>
-							<input type="submit" value="Pretraga"></TD>
-					</TR>
-				</TABLE>
-			</P>
+			<p style="text-align:center">
+				<table id="Table1" cellspacing="3" cellpadding="3" style="border:0;margin-left:auto;margin-right:auto">
+					<tr>
+						<td>&nbsp;&nbsp;
+							<table id="Table2" cellspacing="3" cellpadding="3" style="border:0">
+								<tr>
+									<td><a href="#" onclick="AddChar('&#269;')">&#269;</a></td>
+									<td><a href="#" onclick="AddChar('&#263;')">&#263;</a></td>
+									<td><a href="#" onclick="AddChar('&#273;')">&#273;</a></td>
+									<td><a href="#" onclick="AddChar('š')">š</a></td>
+									<td><a href="#" onclick="AddChar('ž')">ž</a></td>
+								</tr>
+							</table>
+							&nbsp;&nbsp;</td>
+						<td>
+							<input type="text" name="JT1" size="22" style="WIDTH: 168px; HEIGHT: 20px"></td>
+						<td>
+							<input type="submit" value="Pretraga"></td>
+					</tr>
+				</table>
+			</p>
 		</form>
 	</body>
 </html>

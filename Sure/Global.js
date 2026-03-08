@@ -5,7 +5,22 @@ var sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
 
 sPage = sPage.substring(0, sPage.lastIndexOf('.'));
 
-createCookie('LastSura', sPage, 7);
+localStorage.setItem('LastSura', sPage);
+
+// Restore scroll position for this sura
+window.addEventListener('load', function() {
+    var pos = parseInt(localStorage.getItem('ScrollPos_' + sPage), 10);
+    if (pos) window.scrollTo(0, pos);
+});
+
+// Save scroll position (debounced)
+var _scrollTimer;
+window.addEventListener('scroll', function() {
+    clearTimeout(_scrollTimer);
+    _scrollTimer = setTimeout(function() {
+        localStorage.setItem('ScrollPos_' + sPage, window.scrollY);
+    }, 300);
+});
 
 function createCookie(name,value,days) {
    if (days) {

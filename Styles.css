@@ -24,6 +24,17 @@ body{ margin: 2px; }
     background-color: #DCDCBA;
 }
 
+tr.activeSura td {
+    background-color: #3d6b55 !important;
+}
+tr.activeSura td a,
+tr.activeSura td a:visited {
+    color: #ffffff !important;
+}
+tr.activeSura td a:hover {
+    color: #ccffee !important;
+}
+
 .TableCellBackListaSura
 {
 	font-weight: bolder;

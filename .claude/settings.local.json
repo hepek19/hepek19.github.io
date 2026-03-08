@@ -10,7 +10,11 @@
       "Bash(powershell -ExecutionPolicy Bypass -File \"s:\\\\KuranMlivo\\\\hepek19.github.io\\\\reencode.ps1\")",
       "Bash(powershell -ExecutionPolicy Bypass -File \"s:\\\\KuranMlivo\\\\hepek19.github.io\\\\fix_all.ps1\")",
       "Bash(powershell -ExecutionPolicy Bypass -File \"s:\\\\KuranMlivo\\\\hepek19.github.io\\\\fix_missing.ps1\")",
-      "Bash(powershell -ExecutionPolicy Bypass -File \"s:\\\\KuranMlivo\\\\hepek19.github.io\\\\fix_lista.ps1\")"
+      "Bash(powershell -ExecutionPolicy Bypass -File \"s:\\\\KuranMlivo\\\\hepek19.github.io\\\\fix_lista.ps1\")",
+      "Bash(find \"s:/KuranMlivo/hepek19.github.io\" -name \"*.htm\" -type f -exec grep 'language\\\\s*=\\\\s*\"\"javascript\"\"' {} +)",
+      "Bash(find \"s:/KuranMlivo/hepek19.github.io\" -name \"*.htm\" -type f -exec grep 'style=\"\".*\"\".*\\\\\\(valign\\\\|nowrap\\\\|width\\\\|height\\\\\\)' {} +)",
+      "Bash(xargs grep -h '<TABLE')",
+      "Bash(xargs grep -h '<SCRIPT')"
     ]
   }
 }
