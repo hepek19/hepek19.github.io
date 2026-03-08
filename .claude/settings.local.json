@@ -9,7 +9,8 @@
       "Bash(del \"s:\\\\KuranMlivo\\\\hepek19.github.io\\\\fix_charset.ps1\")",
       "Bash(powershell -ExecutionPolicy Bypass -File \"s:\\\\KuranMlivo\\\\hepek19.github.io\\\\reencode.ps1\")",
       "Bash(powershell -ExecutionPolicy Bypass -File \"s:\\\\KuranMlivo\\\\hepek19.github.io\\\\fix_all.ps1\")",
-      "Bash(powershell -ExecutionPolicy Bypass -File \"s:\\\\KuranMlivo\\\\hepek19.github.io\\\\fix_missing.ps1\")"
+      "Bash(powershell -ExecutionPolicy Bypass -File \"s:\\\\KuranMlivo\\\\hepek19.github.io\\\\fix_missing.ps1\")",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"s:\\\\KuranMlivo\\\\hepek19.github.io\\\\fix_lista.ps1\")"
     ]
   }
 }
