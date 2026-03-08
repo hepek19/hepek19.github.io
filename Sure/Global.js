@@ -60,7 +60,7 @@ function ShowHideFusNote() {
 }
 
 function ScroolHeader(headerObject) {
-   headerObject.style.top = document.body.scrollTop
+   // replaced by CSS position:sticky
 }
 
 function doTooltip(e, msg) {

@@ -49,14 +49,14 @@ tr.activeSura td a:hover {
     -moz-box-shadow: 4px 4px 4px #666;
 	-webkit-box-shadow: 4px 4px 4px #666;
 	box-shadow: 4px 4px 4px #666;
-	position: absolute;
+	position: sticky;
+	top: 0;
 	background-color: #cccc99;
+	margin-bottom: 15px;
 }
 
 .SuraBody
 {
-	position: absolute;
-	top: 55px;
 }
 
 .FusNota
