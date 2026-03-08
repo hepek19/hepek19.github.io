@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -Command \":*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File fix_charset.ps1)",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"s:\\\\KuranMlivo\\\\hepek19.github.io\\\\fix_charset.ps1\")",
+      "Bash(powershell -ExecutionPolicy Bypass -Command \"Get-ChildItem ''s:\\\\KuranMlivo\\\\hepek19.github.io'' | Select-Object -First 5\")",
+      "Bash(powershell -ExecutionPolicy Bypass -Command \"Get-ChildItem ''s:\\\\KuranMlivo\\\\hepek19.github.io\\\\Sure'' -Filter ''*.htm'' | Measure-Object\")",
+      "Bash(del \"s:\\\\KuranMlivo\\\\hepek19.github.io\\\\fix_charset.ps1\")",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"s:\\\\KuranMlivo\\\\hepek19.github.io\\\\reencode.ps1\")",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"s:\\\\KuranMlivo\\\\hepek19.github.io\\\\fix_all.ps1\")"
+    ]
+  }
+}
