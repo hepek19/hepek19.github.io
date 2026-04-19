@@ -1,4 +1,4 @@
-*  {font-family:verdana; font-size:14px}
+*  {font-family:verdana; font-size:15px}
 SMALL, .small, SUP, BR, SMALL SPAN {font-size:7pt}
 CODE, KBD, TT {font-size:9pt;color:#666}
 
@@ -40,7 +40,7 @@ body{ margin: 2px; }
 
 body.TableCellBackColorSadrzaj
 {
-	padding-bottom: 2pt;
+	padding-bottom: 12pt;
 }
 
 tr.activeSura td {
