@@ -1,3 +1,0 @@
-JSInd . .
-
-pause
