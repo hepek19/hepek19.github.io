@@ -82,17 +82,101 @@ function highlight(text, query) {
   return safe.replace(new RegExp("(" + pat + ")", "gi"), "<b>$1</b>");
 }
 
+// Extract paragraph/verse number from text (at end or beginning)
+function getVerseNumber(text) {
+  // Try to find number at the beginning: "1. text"
+  var match = text.match(/^(\d+)\.\s/);
+  if (match) return match[1];
+  
+  // Try to find number at the end: "text, 4" or "text, 4."
+  match = text.match(/,?\s*(\d+)\.?$/);
+  if (match) return match[1];
+  
+  return null;
+}
+
+// Remove verse number from text
+function stripVerseNumber(text) {
+  // Remove from beginning: "1. text" -> "text"
+  text = text.replace(/^\d+\.\s+/, '');
+  // Remove from end: "text, 4" or "text, 4." -> "text"
+  text = text.replace(/,?\s*\d+\.?$/, '');
+  return text.trim();
+}
+
 // Extract snippets from text containing the query
-function getSnippets(body, query) {
-  var sents = body.split(/(?<=[.!?*])\s+/);
+function getSnippets(body, query, folder) {
   var lq = normBs(query);
   var out = [];
   
-  for (var i = 0; i < sents.length; i++) {
-    var s = sents[i].trim();
-    if (s && normBs(s).indexOf(lq) !== -1) {
-      if (s.length > 160) s = s.slice(0, 157) + "...";
-      out.push(s);
+  // Only extract verse numbers for Sura files, not commentaries
+  if (folder !== 'Sure') {
+    var sents = body.split(/(?<=[.!?*])\s+/);
+    for (var s = 0; s < sents.length; s++) {
+      var sent = sents[s].trim();
+      if (sent && normBs(sent).indexOf(lq) !== -1) {
+        if (sent.length > 160) sent = sent.slice(0, 157) + "...";
+        out.push({
+          text: sent,
+          verse: null
+        });
+      }
+    }
+    return out;
+  }
+  
+  // For Sura files, find verse numbers
+  var verseRegex = /(\d+[:.]\d*)\s/g;
+  var verses = [];
+  var match;
+  
+  while ((match = verseRegex.exec(body)) !== null) {
+    verses.push({
+      num: match[1],
+      pos: match.index,
+      endNum: match[0].length
+    });
+  }
+  
+  // If no numbered verses found, just split by sentences
+  if (verses.length === 0) {
+    var sents = body.split(/(?<=[.!?*])\s+/);
+    for (var s = 0; s < sents.length; s++) {
+      var sent = sents[s].trim();
+      if (sent && normBs(sent).indexOf(lq) !== -1) {
+        if (sent.length > 160) sent = sent.slice(0, 157) + "...";
+        out.push({
+          text: sent,
+          verse: null
+        });
+      }
+    }
+    return out;
+  }
+  
+  // For each verse, extract the text between this verse and the next
+  for (var v = 0; v < verses.length; v++) {
+    var verseNum = verses[v].num;
+    var startPos = verses[v].pos + verses[v].endNum;
+    var endPos = (v < verses.length - 1) ? verses[v + 1].pos : body.length;
+    
+    var verseText = body.substring(startPos, endPos);
+    
+    // Check if query appears in this verse
+    if (normBs(verseText).indexOf(lq) !== -1) {
+      // Split into sentences
+      var sents = verseText.split(/(?<=[.!?*])\s+/);
+      
+      for (var s = 0; s < sents.length; s++) {
+        var sent = sents[s].trim();
+        if (sent && normBs(sent).indexOf(lq) !== -1) {
+          if (sent.length > 160) sent = sent.slice(0, 157) + "...";
+          out.push({
+            text: sent,
+            verse: verseNum
+          });
+        }
+      }
     }
   }
   
@@ -198,11 +282,13 @@ function runSearch() {
         break;
       }
     }
-    totalSnips += getSnippets(pg2.body, q).length;
+    var snippets = getSnippets(pg2.body, q, pg2.folder);
+    totalSnips += snippets.length;
   }
   
   stat.textContent = totalSnips + ' rezultat(a) pretrage "' + q + '". Pretraga je trajala ' + sec + ' sekundi.';
   
+  var lastFolder = null;
   for (var i = 0; i < filtered.length; i++) {
     var page = null;
     for (var j = 0; j < pages.length; j++) {
@@ -212,7 +298,16 @@ function runSearch() {
       }
     }
     
-    var snips = getSnippets(page.body, q);
+    // Add spacing between different folders
+    if (lastFolder !== null && lastFolder !== page.folder) {
+      var spacer = document.createElement('li');
+      spacer.style.height = '50px';
+      spacer.style.listStyle = 'none';
+      list.appendChild(spacer);
+    }
+    lastFolder = page.folder;
+    
+    var snips = getSnippets(page.body, q, page.folder);
     var li = document.createElement('li');
     var a = document.createElement('a');
     a.href = page.id;
@@ -222,7 +317,15 @@ function runSearch() {
     for (var k = 0; k < snips.length; k++) {
       var d = document.createElement('div');
       d.className = 'snippet-line';
-      d.innerHTML = highlight(snips[k], q);
+      
+      var snippetHtml = highlight(snips[k].text, q);
+      
+      // Add verse number if available and it's from a Sura
+      if (snips[k].verse && page.folder === 'Sure') {
+        snippetHtml = '<span style="margin-right: 4px; color: #666; font-style: italic; font-size: 0.9em;">ajet ' + snips[k].verse + ':</span> ' + snippetHtml;
+      }
+      
+      d.innerHTML = snippetHtml;
       li.appendChild(d);
     }
     
