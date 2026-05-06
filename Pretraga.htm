@@ -3730,6 +3730,14 @@ const pages = [
 // INDEX-END
 </script>
   <script src="search.js"></script>
-  <script src="load-indicator.js"></script>
+  <script>
+// Hide loading indicator when page is fully loaded
+window.addEventListener('load', function() {
+  var loadingEl = document.getElementById('loading');
+  if (loadingEl) {
+    loadingEl.classList.add('hidden');
+  }
+});
+</script>
 </body>
 </html>

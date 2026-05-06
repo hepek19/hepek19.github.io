@@ -29,13 +29,24 @@ var lunrIdx = lunr(function() {
   });
 });
 
-// Initialize Fuse.js for fuzzy search
-var fuse = new Fuse(pages, {
-  keys: ['title', 'body'],
-  threshold: 0.4,
-  includeScore: true,
-  ignoreLocation: true
-});
+// Fuzzy search on original text - only show results that actually contain the query
+function fuzzySearch(query) {
+  var hits = [];
+  var lowerQuery = query.toLowerCase();
+  
+  for (var i = 0; i < pages.length; i++) {
+    var page = pages[i];
+    var titleLower = page.title.toLowerCase();
+    var bodyLower = page.body.toLowerCase();
+    
+    // Check if query appears in title or body
+    if (titleLower.indexOf(lowerQuery) !== -1 || bodyLower.indexOf(lowerQuery) !== -1) {
+      hits.push({ id: page.id });
+    }
+  }
+  
+  return hits;
+}
 
 // Insert character at cursor position
 function insertChar(ch) {
@@ -147,10 +158,8 @@ function runSearch() {
     // Precision mode: exact character matching (no normalization)
     hits = preciseSearch(q);
   } else {
-    // Fuzzy mode: uses normalized text for more flexible matching
-    hits = fuse.search(q).map(function(r) {
-      return { id: r.item.id };
-    });
+    // Fuzzy mode: just check if query appears somewhere in text
+    hits = fuzzySearch(q);
   }
   
   var incK = document.getElementById('ukljuciKomentare').checked;
