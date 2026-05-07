@@ -322,7 +322,10 @@ function runSearch() {
       
       // Add verse number if available and it's from a Sura
       if (snips[k].verse && page.folder === 'Sure') {
-        snippetHtml = '<span style="margin-right: 4px; color: #666; font-style: italic; font-size: 0.9em;">ajet ' + snips[k].verse + ':</span> ' + snippetHtml;
+        var verseNum = snips[k].verse;
+        var suraNum = page.id.replace(/.*\/(\d+)\.htm.*/i, "$1");
+        var verseLink = page.id.replace(/\.htm$/, '') + '.htm#ajet' + verseNum;
+        snippetHtml = '<a href="' + verseLink + '" style="margin-right: 4px; color: #0066cc; font-style: italic; font-size: 0.9em; text-decoration: none; cursor: pointer;">ajet ' + verseNum + ':</a> ' + snippetHtml;
       }
       
       d.innerHTML = snippetHtml;

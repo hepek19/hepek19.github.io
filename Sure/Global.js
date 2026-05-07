@@ -7,8 +7,12 @@ sPage = sPage.substring(0, sPage.lastIndexOf('.'));
 
 localStorage.setItem('LastSura', sPage);
 
-// Restore scroll position for this sura
+// Restore scroll position for this sura (but not if there's an anchor in the URL)
 window.addEventListener('load', function() {
+    // Don't restore scroll position if there's an anchor/hash in the URL
+    if (window.location.hash) {
+        return;
+    }
     var pos = parseInt(localStorage.getItem('ScrollPos_' + sPage), 10);
     if (pos) window.scrollTo(0, pos);
 });
