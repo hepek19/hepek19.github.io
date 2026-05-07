@@ -126,7 +126,7 @@ function getSnippets(body, query, folder) {
   }
   
   // For Sura files, find verse numbers
-  var verseRegex = /(\d+[:.]\d*)\s/g;
+  var verseRegex = /(\d+)[.:]\s/g;
   var verses = [];
   var match;
   
@@ -286,7 +286,7 @@ function runSearch() {
     totalSnips += snippets.length;
   }
   
-  stat.textContent = totalSnips + ' rezultat(a) pretrage "' + q + '". Pretraga je trajala ' + sec + ' sekundi.';
+  stat.textContent = totalSnips + ' rezultata pretrage "' + q + '". Pretraga je trajala ' + sec + ' sekundi.';
   
   var lastFolder = null;
   for (var i = 0; i < filtered.length; i++) {

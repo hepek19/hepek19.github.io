@@ -3511,24 +3511,24 @@ var e,t;e=this,t=function(){"use strict";function e(e,t){var n=Object.keys(e);if
     #results li { padding: 8px 0; border-bottom: 1px solid #eee; }
     #results li a { font-size: 1.05em; text-decoration: none; color: #0366d6; font-weight: bold; }
     #results li a:hover { text-decoration: underline; }
-    .snippet-line { padding: 2px 0 2px 8px; border-left: 3px solid #ddd; margin: 3px 0; line-height: 1.5; font-size: 0.88em; color: #444; }
+    .snippet-line { padding: 2px 2px 2px 8px; border-left: 1px solid silver; margin: 3px 0; line-height: 1.5; font-size: 1em; color: black; }
     .snippet-line b { color: #c0392b; }
   </style>
 </head>
 <body>
   <div id="loading"><div class="loading-spinner"></div></div>
-  <h2 style="display:inline-flex;align-items:center;gap:16px;margin-bottom:12px">Pretraga
+  <div style="display:inline-flex;align-items:center;gap:16px;margin-bottom:12px; visibility: hidden;">Pretraga
     <label style="font-size:0.6em;font-weight:normal;cursor:pointer"><input type="radio" name="mode" value="precise" checked onchange="runSearch()"> Precizna</label>
     <label style="font-size:0.6em;font-weight:normal;cursor:pointer"><input type="radio" name="mode" value="fuzzy" onchange="runSearch()"> Pribli&#382;na</label>
-  </h2>
+  </div>
   <div id="toolbar">
-    <input type="text" id="query" placeholder="Pretraga..." oninput="runSearch()" />
+    <input type="text" id="query" placeholder="pretraga..." oninput="runSearch()" />
     <button onclick="insertChar(this.textContent)">&#269;</button>
     <button onclick="insertChar(this.textContent)">&#263;</button>
     <button onclick="insertChar(this.textContent)">&#353;</button>
     <button onclick="insertChar(this.textContent)">&#382;</button>
     <button onclick="insertChar(this.textContent)">&#273;</button>
-    <label style="margin-left:8px;cursor:pointer;font-size:0.92em"><input type="checkbox" id="ukljuciKomentare" onchange="runSearch()"> Uklju&#269;i i komentare</label>
+    <label style="margin-left:8px;cursor:pointer;font-size:0.92em"><input type="checkbox" id="ukljuciKomentare" onchange="runSearch()"> uklju&#269;i i komentare</label>
   </div>
   <div id="status"></div>
   <ul id="results"></ul>
