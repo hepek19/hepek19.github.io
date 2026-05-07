@@ -325,7 +325,7 @@ function runSearch() {
         var verseNum = snips[k].verse;
         var suraNum = page.id.replace(/.*\/(\d+)\.htm.*/i, "$1");
         var verseLink = page.id.replace(/\.htm$/, '') + '.htm#ajet' + verseNum;
-        snippetHtml = '<a href="' + verseLink + '" style="margin-right: 4px; color: #0066cc; font-style: italic; font-size: 0.9em; text-decoration: none; cursor: pointer;">ajet ' + verseNum + ':</a> ' + snippetHtml;
+        snippetHtml = '<a href="' + verseLink + '" style="margin-right: 4px; color: #0066cc; font-style: italic; font-size: 0.9em; font-weight: normal; text-decoration: none; cursor: pointer;">ajet ' + verseNum + ':</a> ' + snippetHtml;
       }
       
       d.innerHTML = snippetHtml;
