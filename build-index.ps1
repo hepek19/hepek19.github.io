@@ -6,7 +6,7 @@
 # usage: .\build-index.ps1
 
 $root = $PSScriptRoot
-$searchFile = Join-Path $root "search.html"
+$dataFile = Join-Path $root "pages-data.js"
 
 Add-Type -AssemblyName System.Web
 
@@ -45,21 +45,7 @@ if ($pages.Count -eq 0) { Write-Warning "no html files found."; exit 1 }
 
 $indexBlock = "const pages = [`n" + ($pages -join ",`n") + "`n];"
 
-$html = [System.IO.File]::ReadAllText($searchFile, [System.Text.Encoding]::UTF8)
-
-$startMarker = "// INDEX-START"
-$endMarker = "// INDEX-END"
-$s = $html.IndexOf($startMarker)
-$e = $html.IndexOf($endMarker)
-
-if ($s -lt 0 -or $e -lt 0) {
-    Write-Warning "markers not found in search.html. add // INDEX-START and // INDEX-END inside a <script> block."
-    exit 1
-}
-
-$before = $html.Substring(0, $s + $startMarker.Length)
-$after = $html.Substring($e)
-$html = $before + "`n" + $indexBlock + "`n" + $after
-
-[System.IO.File]::WriteAllText($searchFile, $html, [System.Text.UTF8Encoding]::new($false))
-Write-Host ""; Write-Host "done. $($pages.Count) pages indexed into search.html"
+# Write the generated index to pages-data.js (overwrites existing file)
+$content = "// INDEX-START`n" + $indexBlock + "`n// INDEX-END`n"
+[System.IO.File]::WriteAllText($dataFile, $content, [System.Text.UTF8Encoding]::new($false))
+Write-Host ""; Write-Host "done. $($pages.Count) pages indexed into pages-data.js"
