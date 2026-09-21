@@ -61,13 +61,290 @@
   <ul id="results"></ul>
 
   <script src="pages-data.js"></script>
-  <script src="search.js"></script>
-
   <script>
-    window.addEventListener('load', function() {
-      var loadingEl = document.getElementById('loading');
-      if (loadingEl) loadingEl.classList.add('hidden');
-    });
+    (function() {
+      if (typeof pages === 'undefined' || !Array.isArray(pages)) {
+        return;
+      }
+
+      function getPageById(id) {
+        for (var i = 0; i < pages.length; i++) {
+          if (pages[i].id === id) {
+            return pages[i];
+          }
+        }
+        return null;
+      }
+
+      function normBs(s) {
+        if (!s) return "";
+        return s.toLowerCase()
+          .replace(/\u010d/g, "c")
+          .replace(/\u0107/g, "c")
+          .replace(/\u0161/g, "s")
+          .replace(/\u017e/g, "z")
+          .replace(/\u0111/g, "d");
+      }
+
+      var pNorm = pages.map(function(p) {
+        return {
+          id: p.id,
+          title: normBs(p.title),
+          body: normBs(p.body)
+        };
+      });
+
+      var lunrIdx = lunr(function() {
+        this.field('title');
+        this.field('body');
+        this.ref('id');
+        var self = this;
+        pNorm.forEach(function(p) {
+          self.add(p);
+        });
+      });
+
+      function fuzzySearch(query) {
+        var hits = [];
+        var lowerQuery = query.toLowerCase();
+
+        for (var i = 0; i < pages.length; i++) {
+          var page = pages[i];
+          var titleLower = page.title.toLowerCase();
+          var bodyLower = page.body.toLowerCase();
+
+          if (titleLower.indexOf(lowerQuery) !== -1 || bodyLower.indexOf(lowerQuery) !== -1) {
+            hits.push({ id: page.id });
+          }
+        }
+
+        return hits;
+      }
+
+      function insertChar(ch) {
+        var inp = document.getElementById('query');
+        var s = inp.selectionStart;
+        var e = inp.selectionEnd;
+        inp.value = inp.value.slice(0, s) + ch + inp.value.slice(e);
+        inp.selectionStart = inp.selectionEnd = s + 1;
+        inp.focus();
+        runSearch();
+      }
+
+      function highlight(text, query) {
+        var safe = text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+
+        var esc = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        var pat = "";
+
+        for (var i = 0; i < esc.length; i++) {
+          var ch = esc[i].toLowerCase();
+          if (ch === "c" || ch === "\u010d" || ch === "\u0107") {
+            pat += "[c\u010d\u0107]";
+          } else if (ch === "s" || ch === "\u0161") {
+            pat += "[s\u0161]";
+          } else if (ch === "z" || ch === "\u017e") {
+            pat += "[z\u017e]";
+          } else if (ch === "d" || ch === "\u0111") {
+            pat += "[d\u0111]";
+          } else {
+            pat += esc[i];
+          }
+        }
+
+        return safe.replace(new RegExp("(" + pat + ")", "gi"), "<b>$1</b>");
+      }
+
+      function getSnippets(body, query, folder) {
+        var lq = normBs(query);
+        var out = [];
+
+        if (!body || !query) {
+          return out;
+        }
+
+        if (folder !== 'Sure') {
+          var sents = body.split(/(?<=[.!?*])\s+/);
+          for (var s = 0; s < sents.length; s++) {
+            var sent = sents[s].trim();
+            if (sent && normBs(sent).indexOf(lq) !== -1) {
+              if (sent.length > 160) sent = sent.slice(0, 157) + "...";
+              out.push({ text: sent, verse: null });
+            }
+          }
+          return out;
+        }
+
+        var verseRegex = /(\d+)[.:]\s/g;
+        var verses = [];
+        var match;
+
+        while ((match = verseRegex.exec(body)) !== null) {
+          verses.push({
+            num: match[1],
+            pos: match.index,
+            endNum: match[0].length
+          });
+        }
+
+        if (verses.length === 0) {
+          var sentenceParts = body.split(/(?<=[.!?*])\s+/);
+          for (var i = 0; i < sentenceParts.length; i++) {
+            var sentence = sentenceParts[i].trim();
+            if (sentence && normBs(sentence).indexOf(lq) !== -1) {
+              if (sentence.length > 160) sentence = sentence.slice(0, 157) + "...";
+              out.push({ text: sentence, verse: null });
+            }
+          }
+          return out;
+        }
+
+        for (var v = 0; v < verses.length; v++) {
+          var verseNum = verses[v].num;
+          var startPos = verses[v].pos + verses[v].endNum;
+          var endPos = (v < verses.length - 1) ? verses[v + 1].pos : body.length;
+          var verseText = body.substring(startPos, endPos);
+
+          if (normBs(verseText).indexOf(lq) !== -1) {
+            var verseSentences = verseText.split(/(?<=[.!?*])\s+/);
+
+            for (var s = 0; s < verseSentences.length; s++) {
+              var sent = verseSentences[s].trim();
+              if (sent && normBs(sent).indexOf(lq) !== -1) {
+                if (sent.length > 160) sent = sent.slice(0, 157) + "...";
+                out.push({ text: sent, verse: verseNum });
+              }
+            }
+          }
+        }
+
+        return out;
+      }
+
+      function sortById(a, b) {
+        var pa = getPageById(a.id);
+        var pb = getPageById(b.id);
+
+        var fa = pa && pa.folder === "Sure" ? 0 : 1;
+        var fb = pb && pb.folder === "Sure" ? 0 : 1;
+
+        if (fa !== fb) return fa - fb;
+
+        var na = parseInt(a.id.replace(/.*\/(\d+)\.htm.*/i, "$1"), 10) || 0;
+        var nb = parseInt(b.id.replace(/.*\/(\d+)\.htm.*/i, "$1"), 10) || 0;
+
+        return na - nb;
+      }
+
+      function preciseSearch(query) {
+        var hits = [];
+        var lowerQuery = query.toLowerCase();
+
+        for (var i = 0; i < pages.length; i++) {
+          var page = pages[i];
+          var titleLower = page.title.toLowerCase();
+          var bodyLower = page.body.toLowerCase();
+
+          if (titleLower.indexOf(lowerQuery) !== -1 || bodyLower.indexOf(lowerQuery) !== -1) {
+            hits.push({ id: page.id });
+          }
+        }
+
+        return hits;
+      }
+
+      function runSearch() {
+        var q = document.getElementById('query').value.trim();
+        var mode = document.querySelector('input[name=mode]:checked').value;
+        var list = document.getElementById('results');
+        var stat = document.getElementById('status');
+
+        list.innerHTML = "";
+        stat.innerHTML = "";
+
+        if (!q) return;
+
+        var t0 = performance.now();
+        var hits = mode === 'precise' ? preciseSearch(q) : fuzzySearch(q);
+
+        var incK = document.getElementById('ukljuciKomentare').checked;
+        var filtered = [];
+
+        for (var i = 0; i < hits.length; i++) {
+          var page = getPageById(hits[i].id);
+          if (!page) continue;
+          if (page.folder === "SureKomentari" && !incK) continue;
+          filtered.push(hits[i]);
+        }
+
+        filtered.sort(sortById);
+
+        var sec = ((performance.now() - t0) / 1000).toFixed(2);
+
+        if (filtered.length === 0) {
+          stat.textContent = '0 rezultata pretrage "' + q + '".';
+          return;
+        }
+
+        var totalSnips = 0;
+        for (var i = 0; i < filtered.length; i++) {
+          var page = getPageById(filtered[i].id);
+          var snippets = getSnippets(page.body, q, page.folder);
+          totalSnips += snippets.length;
+        }
+
+        stat.textContent = totalSnips + ' rezultata pretrage "' + q + '". Pretraga je trajala ' + sec + ' sekundi.';
+
+        var lastFolder = null;
+        for (var i = 0; i < filtered.length; i++) {
+          var page = getPageById(filtered[i].id);
+
+          if (lastFolder !== null && lastFolder !== page.folder) {
+            var spacer = document.createElement('li');
+            spacer.style.height = '50px';
+            spacer.style.listStyle = 'none';
+            list.appendChild(spacer);
+          }
+          lastFolder = page.folder;
+
+          var snips = getSnippets(page.body, q, page.folder);
+          var li = document.createElement('li');
+          var a = document.createElement('a');
+          a.href = page.id;
+          a.textContent = page.title;
+          li.appendChild(a);
+
+          for (var k = 0; k < snips.length; k++) {
+            var d = document.createElement('div');
+            d.className = 'snippet-line';
+
+            var snippetHtml = highlight(snips[k].text, q);
+
+            if (snips[k].verse && page.folder === 'Sure') {
+              var verseNum = snips[k].verse;
+              var verseLink = page.id.replace(/\.htm$/, '') + '.htm#ajet' + verseNum;
+              snippetHtml = '<a href="' + verseLink + '" style="margin-right: 4px; color: #0066cc; font-style: italic; font-size: 0.9em; font-weight: normal; text-decoration: none; cursor: pointer;">ajet ' + verseNum + ':</a> ' + snippetHtml;
+            }
+
+            d.innerHTML = snippetHtml;
+            li.appendChild(d);
+          }
+
+          list.appendChild(li);
+        }
+      }
+
+      window.addEventListener('load', function() {
+        var loadingEl = document.getElementById('loading');
+        if (loadingEl) loadingEl.classList.add('hidden');
+      });
+
+      window.runSearch = runSearch;
+      window.insertChar = insertChar;
+    })();
   </script>
 </body>
 </html>
